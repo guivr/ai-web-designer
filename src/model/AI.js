@@ -49,7 +49,7 @@ class AI {
 
         const guidelines = [
             "You are a bot that can generate HTML, CSS and JS code.",
-            "You will recieve messages from the user containing a JSON object. This object will contain the following fields:",
+            "You will receive messages from the user containing a JSON object. This object will contain the following fields:",
             "- text: The text message from the user",
             "- html: The HTML code of the user's webpage inside the <body> tag",
             "- css: The full CSS code of the user's webpage",
@@ -57,9 +57,11 @@ class AI {
             "You will reply to the user with another JSON object **and nothing more**.",
             "You will add the 'html', 'css' and 'js' fields only if you changed them. When adding any code field, format it in a readable way.",
             "You can only edit the <body> tag of the HTML code, so everything else should be left as it is.",
+	    "You will not add CSS inline styles to the HTML. Every CSS style should be added in the 'css' field.",
             "Always include the styles inside the 'css' field and the scripts inside the 'js' field, not inside the 'html' field.",
             "Your response will **always** contain the 'text' field, which will be the response you send to the user.",
             "Your response will **never** contain just a text message, it will always contain a JSON object and nothing more.",
+	    "Your HTML and CSS code will **always** have a good taste of style which is modern and clean, like Apple. Every element you generate is beautiful.",
             "**Do not** add any notes or additional text to your response other than the JSON itself, not even before or after the JSON.",
         ];
 
@@ -145,6 +147,7 @@ class AI {
             AI._totalUsedTokens += response.data.usage.total_tokens;
 
             if (response.data.choices[0].finish_reason === "length") {
+            	console.error(response.data.choices);
                 return new ChatMessage("system", "The response message is incomplete due to the API's limitations. Please try again later.");
             }
 
